@@ -16,20 +16,20 @@ public class RepeatsHelperModule : EverestModule {
 
     public RepeatsHelperModule() {
         Instance = this;
-#if DEBUG
-        // debug builds use verbose logging
-        Logger.SetLogLevel(nameof(RepeatsHelperModule), LogLevel.Verbose);
-#else
-        // release builds use info logging to reduce spam in log files
-        Logger.SetLogLevel(nameof(RepeatsHelperModule), LogLevel.Info);
-#endif
     }
+    public bool debugMode = true;
 
     public override void Load() {
-        // TODO: apply any hooks that should always be active
+        Everest.Events.Level.OnLoadLevel += backItemVisualier;
     }
 
     public override void Unload() {
-        // TODO: unapply any hooks applied in Load()
+        Everest.Events.Level.OnLoadLevel -= backItemVisualier;
+    }
+
+    private void backItemVisualier(Level self, Player.IntroTypes playerIntro, bool isFromLoader) {
+        if (debugMode) {
+            self.Add(new backItemVisual());
+        }
     }
 }
