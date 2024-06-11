@@ -15,7 +15,7 @@ using Monocle;
 
 namespace Celeste.Mod.RepeatsHelper;
 
-public class backItemVisual : Entity { // this should not show up in ahorn/lonn hopefully
+public class backItemVisual : Entity {
     public backItemVisual() {
         Depth = Depths.Player+1;
         AddTag(Tags.Persistent);
@@ -23,17 +23,23 @@ public class backItemVisual : Entity { // this should not show up in ahorn/lonn 
 
     public override void Update() {
         base.Update();
-
-        // thank u extended variants but im not using this
-        //Depth = (Depths.BGTerrain + Depths.BGDecals) / 2;
         Depth = 1;
+        RepeatsHelperModule.Session.drawIt[0]=0;
+        Player self = null;
+        if (Scene.Tracker.GetEntity<Player>()!=null) {
+            self = Scene.Tracker.GetEntity<Player>();
+        }
+        if (self!=null) {
+            RepeatsHelperModule.Session.drawIt=[1,Convert.ToInt16(self.X)+0,Convert.ToInt16(self.Y)+0];
+        }
     }
 
     public override void Render() {
         base.Render();
 
-        //if (VinkiModModule.Session.vinkiRenderIt[4]!=-1) {
-        //    GFX.Game[VinkiModModule.textureReplaceNamespaces[VinkiModModule.Session.vinkiRenderIt[4]]].Draw(new Microsoft.Xna.Framework.Vector2 (VinkiModModule.Session.vinkiRenderIt[5],VinkiModModule.Session.vinkiRenderIt[6]));
-        //}
+        Logger.Log(LogLevel.Warn,"temp1",RepeatsHelperModule.Session.drawIt[0]+"a"+RepeatsHelperModule.Session.backItem);
+        if (RepeatsHelperModule.Session.drawIt[0]!=0) {
+            GFX.Game["RepeatsHelper/backItems/backitem_"+RepeatsHelperModule.Session.backItem].Draw(new Microsoft.Xna.Framework.Vector2 (RepeatsHelperModule.Session.drawIt[1],RepeatsHelperModule.Session.drawIt[2]));
+        }
     }
 }
