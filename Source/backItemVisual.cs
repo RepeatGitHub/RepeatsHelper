@@ -24,22 +24,35 @@ public class backItemVisual : Entity {
     public override void Update() {
         base.Update();
         Depth = 1;
-        RepeatsHelperModule.Session.drawIt[0]=0;
+        RepeatsHelperModule.Session.drawIt=0;
         Player self = null;
         if (Scene.Tracker.GetEntity<Player>()!=null) {
             self = Scene.Tracker.GetEntity<Player>();
         }
         if (self!=null) {
-            RepeatsHelperModule.Session.drawIt=[1,Convert.ToInt16(self.X)+0,Convert.ToInt16(self.Y)+0];
+            RepeatsHelperModule.Session.drawIt=1;
         }
+        RepeatsHelperModule.Session.thisPlayer=Scene.Tracker.GetEntity<Player>();
     }
 
     public override void Render() {
         base.Render();
-
-        Logger.Log(LogLevel.Warn,"temp1",RepeatsHelperModule.Session.drawIt[0]+"a"+RepeatsHelperModule.Session.backItem);
-        if (RepeatsHelperModule.Session.drawIt[0]!=0) {
-            GFX.Game["RepeatsHelper/backItems/backitem_"+RepeatsHelperModule.Session.backItem].Draw(new Microsoft.Xna.Framework.Vector2 (RepeatsHelperModule.Session.drawIt[1],RepeatsHelperModule.Session.drawIt[2]));
+        Player self = RepeatsHelperModule.Session.thisPlayer;
+        if (self!=null) {
+            if (self.Ducking) {
+                if (RepeatsHelperModule.Session.howCrouched<4) {
+                    RepeatsHelperModule.Session.howCrouched+=1;
+                }
+            } else if (RepeatsHelperModule.Session.howCrouched>0) {
+                RepeatsHelperModule.Session.howCrouched-=1;
+            }
+            //Logger.Log(LogLevel.Warn,"temp1",RepeatsHelperModule.Session.drawIt[0]+"a"+RepeatsHelperModule.Session.backItem);
+            if(RepeatsHelperModule.Session.backItem>-1) {
+                var flipped = self.Facing;
+                // If player facing right, flipNum is 1. Else, it's -1.
+                var flipNum = flipped==Facings.Right?1:-1;
+                GFX.Game["RepeatsHelper/backItems/backitem_"+RepeatsHelperModule.Session.backItem].Draw(new Microsoft.Xna.Framework.Vector2 (Convert.ToInt16(self.X)-9*flipNum,Convert.ToInt16(self.Y)-15+RepeatsHelperModule.Session.howCrouched), new Microsoft.Xna.Framework.Vector2 (0,0), Color.White, new Microsoft.Xna.Framework.Vector2 (flipNum,1));
+            }
         }
     }
 }
