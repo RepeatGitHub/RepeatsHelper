@@ -6,4 +6,6 @@ public class RepeatsHelperModuleSession : EverestModuleSession {
     public int drawIt = 0;
     public int howCrouched = 0;
     public Player thisPlayer;
+    public int[] lastXY = [0,0];
+    public int markAlpha = 0;
 }

@@ -26,6 +26,7 @@ public class RepeatsHelperModule : EverestModule {
     private void backItemVisualier(Level self, Player.IntroTypes playerIntro, bool isFromLoader) {
         if (debugMode) {
             self.Add(new backItemVisual());
+            self.Add(new markVisual());
         }
     }
 }

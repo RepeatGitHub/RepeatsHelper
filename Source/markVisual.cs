@@ -17,7 +17,7 @@ namespace Celeste.Mod.RepeatsHelper;
 
 public class markVisual : Entity {
     public markVisual() {
-        Depth = 100;
+        Depth = -8669;
         AddTag(Tags.Persistent);
     }
 
@@ -29,10 +29,8 @@ public class markVisual : Entity {
         base.Render();
         Player self = RepeatsHelperModule.Session.thisPlayer;
         if (self!=null) {
-            //Logger.Log(LogLevel.Warn,"temp1",RepeatsHelperModule.Session.drawIt[0]+"a"+RepeatsHelperModule.Session.backItem);
             if(RepeatsHelperModule.Session.hasMarkOfCommunication) {
-                // If player facing right, flipNum is 1. Else, it's -1.
-                GFX.Game["util/pixel"].Draw(new Microsoft.Xna.Framework.Vector2 (Convert.ToInt16(self.X),Convert.ToInt16(self.Y)), new Microsoft.Xna.Framework.Vector2 (0,0), Color.White, new Microsoft.Xna.Framework.Vector2 (2,2));
+                GFX.Game["util/pixel"].Draw(new Microsoft.Xna.Framework.Vector2 (Convert.ToInt16(self.X)-1,Convert.ToInt16(self.Y)-25), new Microsoft.Xna.Framework.Vector2 (0,0), new Color(new Microsoft.Xna.Framework.Vector4 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(127))), new Microsoft.Xna.Framework.Vector2 (1,1));
             }
         }
     }
