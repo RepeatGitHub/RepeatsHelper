@@ -12,7 +12,7 @@ public class RepeatsHelperModule : EverestModule {
         Instance = this;
     }
     //but here's the constants
-    public int[][] offsets = [[-5,-5]];
+    public int[][] offsets = [[-9,-15],[-9,-15]];
     public bool debugMode = true;
 
     public override void Load() {
