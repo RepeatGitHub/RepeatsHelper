@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Numerics;
 using MonoMod.Utils;
 using MonoMod.ModInterop;
 using MonoMod.RuntimeDetour;
@@ -28,9 +27,26 @@ public class markVisual : Entity {
     public override void Render() {
         base.Render();
         Player self = RepeatsHelperModule.Session.thisPlayer;
+        // calculation
+        if (RepeatsHelperModule.Session.lastXY[0]==Convert.ToInt16(self.X)&&RepeatsHelperModule.Session.lastXY[1]==Convert.ToInt16(self.Y)) {
+            RepeatsHelperModule.Session.timeSinceMoved+=1;
+        } else {
+            RepeatsHelperModule.Session.timeSinceMoved=0;
+        }
+        if (RepeatsHelperModule.Session.timeSinceMoved>30) {
+            if (RepeatsHelperModule.Session.markAlpha<1) {
+                RepeatsHelperModule.Session.markAlpha+=0.05f;
+            }
+        } else {
+            if (RepeatsHelperModule.Session.markAlpha>0) {
+                RepeatsHelperModule.Session.markAlpha-=0.05f;
+            }
+        }
+        RepeatsHelperModule.Session.lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
+        // rendering
         if (self!=null) {
-            if(RepeatsHelperModule.Session.hasMarkOfCommunication) {
-                GFX.Game["util/pixel"].Draw(new Microsoft.Xna.Framework.Vector2 (Convert.ToInt16(self.X)-1,Convert.ToInt16(self.Y)-25), new Microsoft.Xna.Framework.Vector2 (0,0), new Color(new Microsoft.Xna.Framework.Vector4 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(127))), new Microsoft.Xna.Framework.Vector2 (1,1));
+            if(RepeatsHelperModule.Session.hasMarkOfCommunication&&RepeatsHelperModule.Session.markAlpha>0) {
+                GFX.Game["util/pixel"].Draw(new Vector2 (Convert.ToInt16(self.X)-1,Convert.ToInt16(self.Y)-25), new Vector2 (0,0), new Color(new Vector3 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255)))*RepeatsHelperModule.Session.markAlpha, new Vector2 (1,1));
             }
         }
     }
