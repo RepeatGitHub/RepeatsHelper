@@ -52,7 +52,7 @@ public class backItemVisual : Entity {
                 // If player facing right, flipNum is 1. Else, it's -1.
                 var flipNum = flipped==Facings.Right?1:-1;
                 var losOffsets = RepeatsHelperModule.Instance.offsets[RepeatsHelperModule.Session.backItem];
-                GFX.Game["RepeatsHelper/backItems/backitem_"+RepeatsHelperModule.Session.backItem].Draw(new Microsoft.Xna.Framework.Vector2 (Convert.ToInt16(self.X)+losOffsets[0]*flipNum,Convert.ToInt16(self.Y)+losOffsets[1]+RepeatsHelperModule.Session.howCrouched), new Microsoft.Xna.Framework.Vector2 (0,0), Color.White, new Microsoft.Xna.Framework.Vector2 (flipNum,1));
+                GFX.Game["RepeatsHelper/backItems/backitem_"+RepeatsHelperModule.Session.backItem].Draw(new Microsoft.Xna.Framework.Vector2 (Convert.ToInt32(self.X)+losOffsets[0]*flipNum,Convert.ToInt32(self.Y)+losOffsets[1]+RepeatsHelperModule.Session.howCrouched), new Microsoft.Xna.Framework.Vector2 (0,0), Color.White, new Microsoft.Xna.Framework.Vector2 (flipNum,1));
             }
         }
     }

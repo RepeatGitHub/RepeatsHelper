@@ -28,7 +28,7 @@ public class markVisual2 : Component {
         Player self = EntityAs<Player>();
         // calculation
         if (self!=null) {
-            if (lastXY[0]==Convert.ToInt16(self.X)&&lastXY[1]==Convert.ToInt16(self.Y)) {
+            if (lastXY[0]==Convert.ToInt32(self.X)&&lastXY[1]==Convert.ToInt32(self.Y)) {
                 timeSinceMoved+=Engine.DeltaTime;
             } else {
                 timeSinceMoved=0;
@@ -40,7 +40,7 @@ public class markVisual2 : Component {
                 markAlpha=Calc.Approach(markAlpha,0f,2f*Engine.DeltaTime);
                 //Logger.Log(LogLevel.Warn,"repeat",markAlpha.ToString()+" stopping");
             }
-            lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
+            lastXY=[Convert.ToInt32(self.X),Convert.ToInt32(self.Y)];
         } else {
             timeSinceMoved=0;
             markAlpha=0;
@@ -53,7 +53,7 @@ public class markVisual2 : Component {
         // rendering
         if (self!=null) {
             if(RepeatsHelperModule.Session.hasMarkOfCommunication&&markAlpha>0) {
-                GFX.Game["util/pixel"].Draw(self.Position+new Vector2 (-1,-25), new Vector2 (0,0), new Color(new Vector3 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255)))*markAlpha, new Vector2 (1,1));
+                GFX.Game["util/pixel"].Draw(self.Position+new Vector2 (-1,-25), new Vector2 (0,0), new Color(new Vector3 (Convert.ToInt32(255),Convert.ToInt32(255),Convert.ToInt32(255)))*markAlpha, new Vector2 (1,1));
             }
             //Logger.Log(LogLevel.Warn,"temp1",markAlpha.ToString());
         }
