@@ -36,8 +36,10 @@ public class markVisual : Entity {
             }
             if (timeSinceMoved>=1) {
                 markAlpha=Calc.Approach(markAlpha,1f,1f*Engine.DeltaTime);
+                //Logger.Log(LogLevel.Warn,"repeat",markAlpha.ToString()+" starting");
             } else {
-                markAlpha=Calc.Approach(markAlpha,0f,-2f*Engine.DeltaTime);
+                markAlpha=Calc.Approach(markAlpha,0f,2f*Engine.DeltaTime);
+                //Logger.Log(LogLevel.Warn,"repeat",markAlpha.ToString()+" stopping");
             }
             lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
         } else {
