@@ -36,7 +36,7 @@ public class markVisual : Entity {
             if (timeSinceMoved>=1) {
                 markAlpha=Calc.Approach(markAlpha,1f,1f*Engine.DeltaTime);
             } else {
-                markAlpha=Calc.Approach(markAlpha,0f,2f*Engine.DeltaTime);
+                markAlpha=Calc.Approach(markAlpha,0f,-2f*Engine.DeltaTime);
             }
             RepeatsHelperModule.Session.lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
         } else {
