@@ -54,7 +54,7 @@ public class markVisual : Entity {
         // rendering
         if (self!=null) {
             if(RepeatsHelperModule.Session.hasMarkOfCommunication&&markAlpha>0) {
-                GFX.Game["util/pixel"].Draw(self.Position+new Vector2 (-1,-25), new Vector2 (0,0), new Color(new Vector3 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255)))*markAlpha, new Vector2 (1,1));
+                GFX.Game["util/pixel"].Draw(self.Position+new Vector2 (-1,-25), new Vector2 (0,0), new Color(new Vector3 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255)))*markAlpha*0.5f, new Vector2 (1,1));
             }
             //Logger.Log(LogLevel.Warn,"temp1",markAlpha.ToString());
         }
