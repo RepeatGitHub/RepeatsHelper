@@ -15,9 +15,10 @@ using Monocle;
 namespace Celeste.Mod.RepeatsHelper;
 
 public class markVisual : Entity {
-    public markVisual() {
+    public markVisual() { // this is called a constructor
         Depth = -8669;
         AddTag(Tags.Persistent);
+        //BloomPoint();
     }
 
     public override void Update() {
@@ -28,21 +29,28 @@ public class markVisual : Entity {
         base.Render();
         Player self = RepeatsHelperModule.Session.thisPlayer;
         // calculation
-        if (RepeatsHelperModule.Session.lastXY[0]==Convert.ToInt16(self.X)&&RepeatsHelperModule.Session.lastXY[1]==Convert.ToInt16(self.Y)) {
-            RepeatsHelperModule.Session.timeSinceMoved+=1;
+        if (self!=null) {
+            if (RepeatsHelperModule.Session.lastXY[0]==Convert.ToInt16(self.X)&&RepeatsHelperModule.Session.lastXY[1]==Convert.ToInt16(self.Y)) {
+                RepeatsHelperModule.Session.timeSinceMoved+=1;
+            } else {
+                RepeatsHelperModule.Session.timeSinceMoved=0;
+            }
+            if (RepeatsHelperModule.Session.timeSinceMoved>60) {
+                if (RepeatsHelperModule.Session.markAlpha<1) {
+                    RepeatsHelperModule.Session.markAlpha+=0.025f;
+                }
+            } else {
+                if (RepeatsHelperModule.Session.markAlpha>0) {
+                    RepeatsHelperModule.Session.markAlpha-=0.05f;
+                }
+                if (RepeatsHelperModule.Session.markAlpha<0) {
+                    RepeatsHelperModule.Session.markAlpha=0;
+                }
+            }
+            RepeatsHelperModule.Session.lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
         } else {
             RepeatsHelperModule.Session.timeSinceMoved=0;
         }
-        if (RepeatsHelperModule.Session.timeSinceMoved>30) {
-            if (RepeatsHelperModule.Session.markAlpha<1) {
-                RepeatsHelperModule.Session.markAlpha+=0.05f;
-            }
-        } else {
-            if (RepeatsHelperModule.Session.markAlpha>0) {
-                RepeatsHelperModule.Session.markAlpha-=0.05f;
-            }
-        }
-        RepeatsHelperModule.Session.lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
         // rendering
         if (self!=null) {
             if(RepeatsHelperModule.Session.hasMarkOfCommunication&&RepeatsHelperModule.Session.markAlpha>0) {
