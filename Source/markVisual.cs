@@ -25,7 +25,7 @@ public class markVisual : Entity {
 
     public override void Update() {
         base.Update();
-        Player self = RepeatsHelperModule.Session.thisPlayer;
+        Player self = Scene.Tracker.GetEntity<Player>();
         // calculation
         if (self!=null) {
             if (RepeatsHelperModule.Session.lastXY[0]==Convert.ToInt16(self.X)&&RepeatsHelperModule.Session.lastXY[1]==Convert.ToInt16(self.Y)) {
@@ -47,7 +47,7 @@ public class markVisual : Entity {
 
     public override void Render() {
         base.Render();
-        Player self = RepeatsHelperModule.Session.thisPlayer;
+        Player self = Scene.Tracker.GetEntity<Player>();
         // rendering
         if (self!=null) {
             if(RepeatsHelperModule.Session.hasMarkOfCommunication&&markAlpha>0) {

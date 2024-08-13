@@ -32,12 +32,12 @@ public class backItemVisual : Entity {
         if (self!=null) {
             RepeatsHelperModule.Session.drawIt=1;
         }
-        RepeatsHelperModule.Session.thisPlayer=Scene.Tracker.GetEntity<Player>();
+        //RepeatsHelperModule.Session.thisPlayer=Scene.Tracker.GetEntity<Player>();
     }
 
     public override void Render() {
         base.Render();
-        Player self = RepeatsHelperModule.Session.thisPlayer;
+        Player self = Scene.Tracker.GetEntity<Player>();
         if (self!=null) {
             if (self.Ducking) {
                 if (RepeatsHelperModule.Session.howCrouched<4) {
