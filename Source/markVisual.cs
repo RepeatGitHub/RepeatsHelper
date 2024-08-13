@@ -18,15 +18,11 @@ public class markVisual : Entity {
     public markVisual() { // this is called a constructor
         Depth = -8669;
         AddTag(Tags.Persistent);
-        //BloomPoint();
+        Add(new BloomPoint(new Vector2(RepeatsHelperModule.Session.lastXY[0],RepeatsHelperModule.Session.lastXY[1]), RepeatsHelperModule.Session.markAlpha, 8));
     }
 
     public override void Update() {
         base.Update();
-    }
-
-    public override void Render() {
-        base.Render();
         Player self = RepeatsHelperModule.Session.thisPlayer;
         // calculation
         if (self!=null) {
@@ -39,6 +35,9 @@ public class markVisual : Entity {
                 if (RepeatsHelperModule.Session.markAlpha<1) {
                     RepeatsHelperModule.Session.markAlpha+=0.025f;
                 }
+                if (RepeatsHelperModule.Session.markAlpha>1) {
+                    RepeatsHelperModule.Session.markAlpha=1;
+                }
             } else {
                 if (RepeatsHelperModule.Session.markAlpha>0) {
                     RepeatsHelperModule.Session.markAlpha-=0.05f;
@@ -50,12 +49,19 @@ public class markVisual : Entity {
             RepeatsHelperModule.Session.lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
         } else {
             RepeatsHelperModule.Session.timeSinceMoved=0;
+            RepeatsHelperModule.Session.markAlpha=0;
         }
+    }
+
+    public override void Render() {
+        base.Render();
+        Player self = RepeatsHelperModule.Session.thisPlayer;
         // rendering
         if (self!=null) {
             if(RepeatsHelperModule.Session.hasMarkOfCommunication&&RepeatsHelperModule.Session.markAlpha>0) {
                 GFX.Game["util/pixel"].Draw(new Vector2 (Convert.ToInt16(self.X)-1,Convert.ToInt16(self.Y)-25), new Vector2 (0,0), new Color(new Vector3 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255)))*RepeatsHelperModule.Session.markAlpha, new Vector2 (1,1));
             }
+        Logger.Log(LogLevel.Warn,"temp1",RepeatsHelperModule.Session.markAlpha.ToString());
         }
     }
 }
