@@ -15,32 +15,33 @@ using Monocle;
 namespace Celeste.Mod.RepeatsHelper;
 
 public class markVisual : Entity {
+    private float timeSinceMoved = 0;
+    private float markAlpha = 0f;
     public markVisual() { // this is called a constructor
         Depth = -8669;
         AddTag(Tags.Persistent);
-        Add(new BloomPoint(new Vector2(RepeatsHelperModule.Session.lastXY[0],RepeatsHelperModule.Session.lastXY[1]), RepeatsHelperModule.Session.markAlpha, 8));
+        //Add(new BloomPoint(new Vector2(RepeatsHelperModule.Session.lastXY[0],RepeatsHelperModule.Session.lastXY[1]), RepeatsHelperModule.Session.markAlpha, 8));
     }
 
     public override void Update() {
         base.Update();
-        var deltaPerFrame = Engine.DeltaTime*60;
         Player self = RepeatsHelperModule.Session.thisPlayer;
         // calculation
         if (self!=null) {
             if (RepeatsHelperModule.Session.lastXY[0]==Convert.ToInt16(self.X)&&RepeatsHelperModule.Session.lastXY[1]==Convert.ToInt16(self.Y)) {
-                RepeatsHelperModule.Session.timeSinceMoved+=1*deltaPerFrame;
+                timeSinceMoved+=Engine.DeltaTime;
             } else {
-                RepeatsHelperModule.Session.timeSinceMoved=0;
+                timeSinceMoved=0;
             }
-            if (RepeatsHelperModule.Session.timeSinceMoved>60) {
-                RepeatsHelperModule.Session.markAlpha=Calc.Approach(RepeatsHelperModule.Session.markAlpha,1f,1f*Engine.DeltaTime);
+            if (timeSinceMoved>=1) {
+                markAlpha=Calc.Approach(markAlpha,1f,1f*Engine.DeltaTime);
             } else {
-                RepeatsHelperModule.Session.markAlpha=Calc.Approach(RepeatsHelperModule.Session.markAlpha,0f,2f*Engine.DeltaTime);
+                markAlpha=Calc.Approach(markAlpha,0f,2f*Engine.DeltaTime);
             }
             RepeatsHelperModule.Session.lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
         } else {
-            RepeatsHelperModule.Session.timeSinceMoved=0;
-            RepeatsHelperModule.Session.markAlpha=0;
+            timeSinceMoved=0;
+            markAlpha=0;
         }
     }
 
@@ -49,10 +50,10 @@ public class markVisual : Entity {
         Player self = RepeatsHelperModule.Session.thisPlayer;
         // rendering
         if (self!=null) {
-            if(RepeatsHelperModule.Session.hasMarkOfCommunication&&RepeatsHelperModule.Session.markAlpha>0) {
-                GFX.Game["util/pixel"].Draw(new Vector2 (Convert.ToInt16(self.X)-1,Convert.ToInt16(self.Y)-25), new Vector2 (0,0), new Color(new Vector3 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255)))*RepeatsHelperModule.Session.markAlpha, new Vector2 (1,1));
+            if(RepeatsHelperModule.Session.hasMarkOfCommunication&&markAlpha>0) {
+                GFX.Game["util/pixel"].Draw(new Vector2 (Convert.ToInt16(self.X)-1,Convert.ToInt16(self.Y)-25), new Vector2 (0,0), new Color(new Vector3 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255)))*markAlpha, new Vector2 (1,1));
             }
-        Logger.Log(LogLevel.Warn,"temp1",RepeatsHelperModule.Session.markAlpha.ToString());
+            //Logger.Log(LogLevel.Warn,"temp1",markAlpha.ToString());
         }
     }
 }
