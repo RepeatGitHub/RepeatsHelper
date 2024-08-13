@@ -17,6 +17,7 @@ namespace Celeste.Mod.RepeatsHelper;
 public class markVisual : Entity {
     private float timeSinceMoved = 0;
     private float markAlpha = 0f;
+    private int[] lastXY = [0,0];
     public markVisual() { // this is called a constructor
         Depth = -8669;
         AddTag(Tags.Persistent);
@@ -28,7 +29,7 @@ public class markVisual : Entity {
         Player self = Scene.Tracker.GetEntity<Player>();
         // calculation
         if (self!=null) {
-            if (RepeatsHelperModule.Session.lastXY[0]==Convert.ToInt16(self.X)&&RepeatsHelperModule.Session.lastXY[1]==Convert.ToInt16(self.Y)) {
+            if (lastXY[0]==Convert.ToInt16(self.X)&&lastXY[1]==Convert.ToInt16(self.Y)) {
                 timeSinceMoved+=Engine.DeltaTime;
             } else {
                 timeSinceMoved=0;
@@ -38,7 +39,7 @@ public class markVisual : Entity {
             } else {
                 markAlpha=Calc.Approach(markAlpha,0f,-2f*Engine.DeltaTime);
             }
-            RepeatsHelperModule.Session.lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
+            lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
         } else {
             timeSinceMoved=0;
             markAlpha=0;
@@ -51,7 +52,7 @@ public class markVisual : Entity {
         // rendering
         if (self!=null) {
             if(RepeatsHelperModule.Session.hasMarkOfCommunication&&markAlpha>0) {
-                GFX.Game["util/pixel"].Draw(new Vector2 (Convert.ToInt16(self.X)-1,Convert.ToInt16(self.Y)-25), new Vector2 (0,0), new Color(new Vector3 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255)))*markAlpha, new Vector2 (1,1));
+                GFX.Game["util/pixel"].Draw(self.Position+new Vector2 (-1,-25), new Vector2 (0,0), new Color(new Vector3 (Convert.ToInt16(255),Convert.ToInt16(255),Convert.ToInt16(255)))*markAlpha, new Vector2 (1,1));
             }
             //Logger.Log(LogLevel.Warn,"temp1",markAlpha.ToString());
         }
