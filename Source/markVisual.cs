@@ -23,7 +23,7 @@ public class markVisual : Entity {
 
     public override void Update() {
         base.Update();
-        var deltaPerFrame = Engine.DeltaTime/60;
+        var deltaPerFrame = Engine.DeltaTime*60;
         Player self = RepeatsHelperModule.Session.thisPlayer;
         // calculation
         if (self!=null) {
@@ -33,19 +33,9 @@ public class markVisual : Entity {
                 RepeatsHelperModule.Session.timeSinceMoved=0;
             }
             if (RepeatsHelperModule.Session.timeSinceMoved>60) {
-                if (RepeatsHelperModule.Session.markAlpha<1) {
-                    RepeatsHelperModule.Session.markAlpha+=0.025f*deltaPerFrame;
-                }
-                if (RepeatsHelperModule.Session.markAlpha>1) {
-                    RepeatsHelperModule.Session.markAlpha=1;
-                }
+                RepeatsHelperModule.Session.markAlpha=Calc.Approach(RepeatsHelperModule.Session.markAlpha,1f,1f*Engine.DeltaTime);
             } else {
-                if (RepeatsHelperModule.Session.markAlpha>0) {
-                    RepeatsHelperModule.Session.markAlpha-=0.05f*deltaPerFrame;
-                }
-                if (RepeatsHelperModule.Session.markAlpha<0) {
-                    RepeatsHelperModule.Session.markAlpha=0;
-                }
+                RepeatsHelperModule.Session.markAlpha=Calc.Approach(RepeatsHelperModule.Session.markAlpha,0f,2f*Engine.DeltaTime);
             }
             RepeatsHelperModule.Session.lastXY=[Convert.ToInt16(self.X),Convert.ToInt16(self.Y)];
         } else {
