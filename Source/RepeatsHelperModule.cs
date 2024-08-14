@@ -42,26 +42,34 @@ public class RepeatsHelperModule : EverestModule {
     // but here's the commands
     [Command("ss_set_inv", "(Sacred Solitude) Syntax for the ss_set_inv command:\n- \"ss_set_inv\": Shows this help message.\n- \"ss_set_inv mark <true/false>\": Sets the Mark of Communication to on or off.\n- \"ss_set_inv backitem <0/1/...>\": Sets the player's back item to whatever is input, as long as what's input to the command is an integer within the valid range of items.")]
     public static void cmdSetInvHelp(string inputA, string inputB) {
-        if (inputA==null||inputB==null) {
+        if (inputA==null) {
             Engine.Commands.Log($"Syntax for the ss_set_inv command:");
             Engine.Commands.Log($"- \"ss_set_inv\": Shows this help message.");
             Engine.Commands.Log($"- \"ss_set_inv mark <true/false>\": Sets the Mark of Communication to on or off.");
             Engine.Commands.Log($"- \"ss_set_inv backitem <0/1/...>\": Sets the player's back item to whatever is input, as long as what's input to the command is an integer within the valid range of items.");
         } else if (inputA=="mark") {
-            if (inputB=="true") {
-                Session.hasMarkOfCommunication = true;
-            } else if (inputB=="false") {
-                Session.hasMarkOfCommunication = false;
+            if (Session!=null) {
+                if (inputB=="true") {
+                    Session.hasMarkOfCommunication = true;
+                } else if (inputB=="false") {
+                    Session.hasMarkOfCommunication = false;
+                } else {
+                    Engine.Commands.Log($"Invalid boolean! Use true or false.");
+                }
             } else {
-                Engine.Commands.Log($"Invalid boolean! Use true or false.");
+                Engine.Commands.Log($"Player is not ingame!");
             }
         } else if (inputA=="backitem") {
-            if (inputB=="0") {
-                Session.backItem = 0;
-            } else if (inputB=="1") {
-                Session.backItem = 1;
+            if (Session!=null) {
+                if (inputB=="0") {
+                    Session.backItem = 0;
+                } else if (inputB=="1") {
+                    Session.backItem = 1;
+                } else {
+                    Engine.Commands.Log($"Invalid item number! Use an integer between 0-1.");
+                }
             } else {
-                Engine.Commands.Log($"Invalid item number! Use an integer between 0-1.");
+                Engine.Commands.Log($"Player is not ingame!");
             }
         } else {
             Engine.Commands.Log($"Invalid subcommand! Use ss_set_inv to see the correct syntax.");
